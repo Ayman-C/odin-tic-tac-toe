@@ -1,0 +1,41 @@
+
+body {
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+#resultContainer {
+}
+
+#gameContainer {
+    flex-grow: 1;
+}
+
+
+ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    height:50%;
+    width:30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+li{
+    border: 1px solid brown;
+    background-color: #35654d ;
+    width: 30%;
+    padding-bottom: 30%;
+
+}
+
+h1 , footer {
+    margin-top: 0;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
