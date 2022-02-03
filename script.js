@@ -1,7 +1,6 @@
 // const startElem=document.getElementById("start");
 const squares=document.getElementsByClassName("square");
-const playerPawn = {"1" : "X","-1" : "O"}
-let result = {winner : "" , winningDir : ""}  
+const restartBtn=document.getElementById("restart");
 const squareXY = {
     square1 : [0,0],
     square2 : [0,1],
@@ -36,25 +35,31 @@ const gameData = (function() {
      let p2 = Player("player2",-1);; 
      let round=0;
      let playerTurn = () => ( gameData.round % 2 === 0) ? p1.play : p2.play; 
-   return {p1,p2,round,playerTurn}
+     let playerName= () => ( (gameData.round + 1) % 2 === 0) ? p1.getName() : p2.getName(); 
+     const playerPawn = {"1" : "X","-1" : "O"}
+     let result = {winner : "" , winningDir : ""}  
+   return {p1,p2,round,playerTurn,playerPawn,result,playerName}
 })()
 
 const initGame = (function() {
     gameBoard.reset;
+    let pawn= () => gameData.playerPawn[gameData.playerTurn()];
+    const triggerGame = function() {
+        this.innerHTML=pawn();
+        gameStatus=gameFlow(squareXY[this.id]);
+        this.removeEventListener("click",triggerGame);
+        (!gameStatus) ? stopRound() : console.log("keep going");
+    }
     const startRound = () => {
         [...squares].forEach(square => {
-            square.addEventListener("click", function() {
-            let targetXY=squareXY[this.id];
-            gameFlow(targetXY)
-            this.innerHTML="X"
+            square.addEventListener("click", triggerGame)
         })    
-    })}
-    // const activateGame = function() {  
-    //     startElem.addEventListener("click",() => {
-    //         startRound();        
-    //     })    
-    // }
-   // activateGame()
+    }
+    const stopRound = () => {
+        [...squares].forEach(square => {
+            square.removeEventListener("click", triggerGame)
+        })    
+    }
     startRound(); 
 })()
 
@@ -83,20 +88,32 @@ const outcome = (function() {
     }
     let result =(squareX,SquareY) => isWinner(count(squareX,SquareY))
     return {result};    
+
+    
 })()
 
 const gameFlow = function(targetXY){
+    let status=true;
     let square = {x : targetXY[0], y : targetXY[1]} 
     let isEmpty = () => gameBoard.array[square.x][square.y]===0 
     let playerWon = () => outcome.result(square.x,square.y);
+    let lastRound = () => (gameData.round===9);
     if (isEmpty() && !playerWon().status) {
         gameBoard.addPawn(gameData.playerTurn(),square.x,square.y);
         gameData.round++;
-        console.log(gameBoard.array)
     } 
-    let roundResult= playerWon().status ? {winner : -gameData.playerTurn() , winningDir : playerWon().winDirection}  : {winner : "Draw" , winningDir : ""}
+    if (lastRound() && !playerWon().status) {
+        gameData.result[winner]="draw";
+        status=false;
+    }
+    if (playerWon().status){
+        gameData.result.winner = gameData.playerName();
+        gameData.result.winningDir = playerWon().winDirection;
+        status=false;
+    }
     
-    return roundResult
+    console.log(gameData.result.winner)
+    return status;
 }
 
 
