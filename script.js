@@ -24,6 +24,16 @@ const Player = (name,playerSymbol) => {
     return {getName,getScore,play,win};
 };
 
+const cpuLogic = () => {
+    const randomize = (max) => {return Math.floor(Math.random()*max)}
+    const random = () => {
+        let squareX=randomize(3); 
+        let squareY=randomize(3);
+        return [squareX,squareY]; 
+    }
+    return {random};
+}
+
 const gameBoard = (function(){
     let array =[...Array(3)].map(e => Array(3).fill(0));
     let amendArray = (array,newArray) => {return Object.assign(array,newArray)};
@@ -78,7 +88,7 @@ const display = (function() {
             }
             inputBox.addEventListener("keydown",evt => {
                 if (evt.keyCode===13) {
-                    player.textContent= inputBox.value ==="" ? player.innerHTML : inputBox.value;
+                    player.textContent= inputBox.value ==="" ? player.textContent : inputBox.value;
                     inputBox.style.display="none";
                 }
             })
