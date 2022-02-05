@@ -4,6 +4,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
+    background-color: black;
 }
 
 #resultContainer {
@@ -30,6 +31,9 @@ body {
     text-align: center;
 }
 
+.hidden {
+    visibility:hidden;
+}
 
 ul {
     display: flex;
@@ -57,6 +61,17 @@ li{
 h1 , footer {
     margin-top: 0;
     background-color: black;
-    color: white;
+    color: brown;
     text-align: center;
+       
 }
+
+h1 {
+    border-bottom:double 5px #35654d ;
+
+}
+
+footer {
+    border-top: double 5px #35654d ;
+}
+
