@@ -2,6 +2,7 @@ const squares = document.getElementsByClassName("square");
 const tickedsquares = document.getElementsByClassName("ticked");
 const replayBtn = document.getElementById("replay");
 const resultBox = document.getElementById("resultContainer");
+const players = document.getElementsByClassName("players");
 const squareXY = {
     square1 : [0,0],
     square2 : [0,1],
@@ -59,14 +60,31 @@ const display = (function() {
     const toggleReplayButton = ( () => { replayBtn.classList.toggle("hidden") } )
     const toggleResult = ( () => {
         resultBox.classList.toggle("hidden");
-        resultBox.textContent = gameData.result.winner==="draw" ? "It is a draw!" : `Congratulations ${gameData.playerName()} won this round!`;
+        winnerName=document.getElementById(gameData.playerName().toLowerCase()).textContent;
+        resultBox.textContent = gameData.result.winner==="draw" ? "It is a draw!" : `Congratulations ${winnerName} won this round!`;
     })
-
     const gameOver = () => {
         toggleReplayButton();
         toggleResult();
     }
-    return {board,toggleReplayButton,toggleResult,gameOver};
+    const changePlayerName = () => {
+        [...players].forEach( player => player.addEventListener("mouseover",function() { 
+            let inputExists = () => { return document.querySelector("input") };
+            
+            if (inputExists() === null) {
+                inputBox = document.createElement("input");
+                inputBox.value = "new name?"
+                player.appendChild(inputBox);
+            }
+            inputBox.addEventListener("keydown",evt => {
+                if (evt.keyCode===13) {
+                    player.textContent= inputBox.value ==="" ? player.innerHTML : inputBox.value;
+                    inputBox.style.display="none";
+                }
+            })
+        }))
+    }
+    return {board,toggleReplayButton,toggleResult,gameOver,changePlayerName};
 })()
 
 const initGame = (function() {
@@ -99,6 +117,7 @@ const initGame = (function() {
         })
     }
     gameBoard.resetArray(gameBoard.array);
+    display.changePlayerName();
     display.gameOver();
     replayGame();
     startGame(); 

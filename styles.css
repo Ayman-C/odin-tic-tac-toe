@@ -18,7 +18,20 @@ body {
 }
 
 #gameContainer {
+    display:flex;
     flex-grow: 1;
+}
+h2 {
+    color: rgb(255,108,97,0.75);
+    font-size: 175%;
+}
+#player1 {
+    margin-left: 15%;
+    align-self: center;
+}
+#player2 {
+    margin-right: 15%;
+    align-self: center;
 }
 
 .button {
@@ -36,6 +49,7 @@ body {
 
 .hidden {
     visibility:hidden;
+    
 }
 
 ul {
@@ -43,24 +57,30 @@ ul {
     flex-direction: row;
     flex-wrap: wrap;
     list-style: none;
+    margin-top: 4.5%;
     padding-bottom: 30%;
     max-height: 0;
     width:30%;
     margin-left: auto;
     margin-right: auto;
 }
+input {
+    background-color: #192F3E;
+    border:1px solid rgb(255,108,97);
+    color: rgb(255,108,97) ;
+    display: block;
+}
 
 li{
     display: flex;
     border: 1px solid #192F3E;
-    background-color: rgb(255,108,97)  ;
+    background-color: rgb(255,108,97);
     color: #192F3E;
     width: 30%;
     padding-bottom: 30%; 
     max-height: 0; 
     justify-content: center;
     align-content: center;
-    /* font-size: 100px; */
 }
 
 .ticked{
@@ -71,13 +91,11 @@ h1 , footer {
     margin-top: 0;
     color: rgb(255,108,97);
     text-align: center;
-       
 }
 
 h1 {
     border-bottom:double 5px rgba(255, 107, 97, 0.55)  ;
     color: rgb(255,108,97,0.75);
-
 }
 
 footer {
