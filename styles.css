@@ -4,7 +4,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
-    background-color: black;
+    background-color: #192F3E
 }
 
 #resultContainer {
@@ -22,8 +22,8 @@ body {
 .button {
     margin-left: 0.5%;
     margin-right: 0.5%;
-    border: 1px solid brown;
-    background-color:#35654d ;
+    border: 1px solid rgba(255, 107, 97)  ;
+    background-color:rgb(255,108,97) ;
     color: white;
     padding: 0.25%;
     width: 5%;
@@ -48,8 +48,9 @@ ul {
 
 li{
     display: flex;
-    border: 1px solid brown;
-    background-color: #35654d ;
+    border: 1px solid #192F3E;
+    background-color: rgb(255,108,97)  ;
+    color: #192F3E;
     width: 30%;
     padding-bottom: 30%;
     max-height: 0;
@@ -60,18 +61,19 @@ li{
 
 h1 , footer {
     margin-top: 0;
-    background-color: black;
-    color: brown;
+    color: rgb(255,108,97);
     text-align: center;
        
 }
 
 h1 {
-    border-bottom:double 5px #35654d ;
+    border-bottom:double 5px rgba(255, 107, 97, 0.55)  ;
+    color: rgb(255,108,97,0.75);
 
 }
 
 footer {
-    border-top: double 5px #35654d ;
+    border-top: double 5px rgba(255, 107, 97, 0.55)  ;
+    color: rgb(255,108,97,0.5);
 }
 
