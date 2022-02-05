@@ -1,5 +1,7 @@
 const squares=document.getElementsByClassName("square");
+const tickedsquares=document.getElementsByClassName("ticked");
 const replayBtn=document.getElementById("replay");
+const resultBox=document.getElementById("resultContainer");
 const squareXY = {
     square1 : [0,0],
     square2 : [0,1],
@@ -30,8 +32,8 @@ const gameBoard = (function(){
 })();
 
 const gameData = (function() {
-     let p1 = Player("player1",1);;
-     let p2 = Player("player2",-1);; 
+     let p1 = Player("Player1",1);;
+     let p2 = Player("Player2",-1);; 
      let round=0;
      let playerTurn = () => ( gameData.round % 2 === 0) ? p1.play : p2.play; 
      let playerName= () => ( (gameData.round + 1) % 2 === 0) ? p1.getName() : p2.getName(); 
@@ -44,17 +46,32 @@ const gameData = (function() {
 const display = (function() {
     const board =( () => {
         const clear = () => {
-            [...squares].forEach(square => {
-                square.innerHTML="";
+            [...tickedsquares].forEach(tickedSquare => {
+                tickedSquare.remove();
             })    
         }
-        const addPawn = (that) => {that.innerHTML=gameData.pawn()};
+        const addPawn = (that) => {
+            newDiv=document.createElement("div")
+            newDiv.classList.add("ticked")
+            newDiv.textContent=gameData.pawn();
+            that.appendChild(newDiv)
+            //that.innerHTML=gameData.pawn()
+        };
         return {clear,addPawn};
     })()
     const toggleReplayButton =(() => {
         replayBtn.classList.toggle("hidden")
     })
-    return {board,toggleReplayButton}
+    const toggleResult =(() => {
+        resultBox.classList.toggle("hidden")
+        resultBox.textContent=`Congratulations ${gameData.playerName()} won this round!`
+    })
+
+    const gameOver =() => {
+        toggleReplayButton();
+        toggleResult();
+    }
+    return {board,toggleReplayButton,toggleResult,gameOver}
 })()
 
 const initGame = (function() {
@@ -63,7 +80,7 @@ const initGame = (function() {
         gameStatus=gameFlow(squareXY[this.id]);
         this.removeEventListener("click",triggerGame);
         (!gameStatus) ? stopGame() : "";
-        (!gameStatus) ? display.toggleReplayButton() : "";
+        (!gameStatus) ? display.gameOver() : "";
     }
     const startGame = () => {
         [...squares].forEach(square => {
@@ -76,22 +93,23 @@ const initGame = (function() {
         })    
     }
     const clearGame = () => {
-            display.board.clear();
-            gameBoard.resetArray(gameBoard.array);
-            gameData.round=0;
-            gameData.result.winner="";
-            gameData.result.winningDir="";
+        display.board.clear();
+        gameBoard.resetArray(gameBoard.array);
+        gameData.round=0;
+        gameData.result.winner="";
+        gameData.result.winningDir="";
     }   
 
     const replayGame = () => {
         replayBtn.addEventListener("click", () => {
         clearGame();
         startGame();
-        display.toggleReplayButton()
+       
+        display.gameOver()
         })
     }
     gameBoard.resetArray(gameBoard.array)
-    display.toggleReplayButton()
+    display.gameOver()
     replayGame();
     startGame(); 
 })()
