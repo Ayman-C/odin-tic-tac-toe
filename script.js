@@ -64,7 +64,8 @@ const display = (function() {
     })
     const toggleResult =(() => {
         resultBox.classList.toggle("hidden")
-        resultBox.textContent=`Congratulations ${gameData.playerName()} won this round!`
+        console.log(gameData.result)
+        resultBox.textContent=gameData.result.winner==="draw" ? "It is a draw!" : `Congratulations ${gameData.playerName()} won this round!`
     })
 
     const gameOver =() => {
@@ -104,7 +105,6 @@ const initGame = (function() {
         replayBtn.addEventListener("click", () => {
         clearGame();
         startGame();
-       
         display.gameOver()
         })
     }
