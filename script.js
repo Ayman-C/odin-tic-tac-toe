@@ -3,6 +3,7 @@ const tickedsquares = document.getElementsByClassName("ticked");
 const replayBtn = document.getElementById("replay");
 const resultBox = document.getElementById("resultContainer");
 const players = document.getElementsByClassName("players");
+const toggleBtn = document.getElementById("switch");
 const squareXY = {
     square1 : [0,0],
     square2 : [0,1],
@@ -51,14 +52,20 @@ const cpuLogic = (() => {
     }
     const algoTable = { "random" : random , "minimax" : "N/A"}
     const play = (algo) => { document.getElementById(algoTable[algo]()).click() }
+    
+
+    const enableCPU = ( () => { toggleBtn.addEventListener("click",function() {
+        gameData.p2.algo = (this.checked) ? "random" : "none";
+    })
+    })()
     return {random,play};
 })()
 
 const gameData = (function() {
      let p1 = Player("Player1",1,"none");
-     let p2 = Player("Player2",-1,"random"); 
+     let p2 = Player("Player2",-1,"none"); 
      let round=0;
-     let isCPU = () => ( gameData.round % 2 === 0) ? p1.algo!="none" : p2.algo!="none"; 
+     let isCPU = () => ( gameData.round % 2 === 0) ? false : toggleBtn.checked; 
      let playerTurn = () => ( gameData.round % 2 === 0) ? p1.play : p2.play; 
      let playerName = () => ( (gameData.round + 1) % 2 === 0) ? p1.getName() : p2.getName(); 
      const playerPawn = {"1" : "X","-1" : "O"};
@@ -92,10 +99,11 @@ const display = (function() {
     }
     const changePlayerName = () => {
         [...players].forEach( player => player.addEventListener("mouseover",function() { 
-            let inputExists = () => { return document.querySelector("input") };
+            let inputExists = () => { return document.querySelector(".nameInput") };
             
             if (inputExists() === null) {
                 inputBox = document.createElement("input");
+                inputBox.classList.add("nameInput")
                 inputBox.value = "new name?"
                 player.appendChild(inputBox);
             }
@@ -117,8 +125,9 @@ const initGame = (function() {
         this.removeEventListener("click",triggerGame);
         (!gameStatus) ? stopGame() : "";
         (!gameStatus) ? display.gameOver() : "";
-        //(gameStatus) ? (gameData.isCPU() ? document.getElementById(cpuLogic.random()).click() : "" ) : ""
-        (gameStatus) ? (gameData.isCPU() ? cpuLogic.play(gameData.p2.algo) : "" ) : ""
+        if (gameStatus) {
+            gameData.isCPU() ? cpuLogic.play(gameData.p2.algo) : "" 
+        }
     }
     const startGame = () => {
         [...squares].forEach(square => { square.addEventListener("click", triggerGame); })    
@@ -133,6 +142,7 @@ const initGame = (function() {
         gameData.result.winner = "";
         gameData.result.winningDir = "";
     }   
+   
 
     const replayGame = () => {
         replayBtn.addEventListener("click", () => {
