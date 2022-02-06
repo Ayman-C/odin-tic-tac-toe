@@ -14,7 +14,8 @@ body {
 
 #buttonContainer {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items:  center;
 }
 
 #gameContainer {
@@ -34,14 +35,22 @@ h2 {
     align-self: center;
 }
 
+#toggleContainer {
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: center; 
+}
+
 .button {
     margin-left: 0.5%;
     margin-right: 0.5%;
-    border: 1px solid rgba(255, 107, 97)  ;
+    border: 1px soxlid rgba(255, 107, 97)  ;
     background-color:rgb(255,108,97) ;
     color: #192F3E;
     padding: 0.25%;
     width: 5%;
+    cursor: pointer;
     border-radius: 8px;
     font-size: 100%;
     text-align: center;
@@ -57,7 +66,7 @@ ul {
     flex-direction: row;
     flex-wrap: wrap;
     list-style: none;
-    margin-top: 4.5%;
+    margin-top: 2.5%;
     padding-bottom: 30%;
     max-height: 0;
     width:30%;
@@ -105,3 +114,52 @@ footer {
 }
 
 
+/* toggle button */
+
+
+input[type="checkbox"] {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
+
+
+label {
+    display: block;
+    width: 5%;
+    height: 30px;
+    background-color: rgb(255,108,97,0.65);
+    border-radius: 100px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.5s;
+    box-shadow: 0 0 20px #477a8550;
+    
+  }
+
+label::after {
+    content: "";
+    width: 28px;
+    height: 28px;
+    background-color: #192F3E;;
+    position: absolute;
+    border-radius: 20px;
+    top: 1px;
+    left: 1px;
+    transition: 0.5s;
+}
+
+input:checked + label:after{
+    translate: 122%;
+}
+
+input:checked + label{
+    background-color: rgb(255,108,97);
+}
+ img {
+    margin-left: 1%;
+    width: 30px;
+    height: 30px;
+}
+  
+  
