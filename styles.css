@@ -54,6 +54,7 @@ h2 {
     border-radius: 8px;
     font-size: 100%;
     text-align: center;
+    margin-bottom: 0.5%;
 }
 
 .hidden {
@@ -126,14 +127,16 @@ input[type="checkbox"] {
 
 label {
     display: block;
-    width: 5%;
+    width: 65px;
     height: 30px;
     background-color: rgb(255,108,97,0.65);
     border-radius: 100px;
     position: relative;
+    right:5px;
     cursor: pointer;
     transition: 0.5s;
     box-shadow: 0 0 20px #477a8550;
+    flex-shrink: 0;
     
   }
 
