@@ -15,24 +15,15 @@ const squareXY = {
     square9 : [2,2],
 }
 
-const Player = (name,playerSymbol) => {
+const Player = (name,playerSymbol,algo="none") => {
     this.score = 0;
     const getName = () => name;
     const getScore = () => score;
     const play = playerSymbol;
     const win = () => ++score;
-    return {getName,getScore,play,win};
+    return {getName,getScore,play,win,algo};
 };
 
-const cpuLogic = () => {
-    const randomize = (max) => {return Math.floor(Math.random()*max)}
-    const random = () => {
-        let squareX=randomize(3); 
-        let squareY=randomize(3);
-        return [squareX,squareY]; 
-    }
-    return {random};
-}
 
 const gameBoard = (function(){
     let array =[...Array(3)].map(e => Array(3).fill(0));
@@ -42,16 +33,38 @@ const gameBoard = (function(){
     return {array,amendArray,resetArray,addPawn};
 })();
 
+const cpuLogic = (() => {
+    function getKeyByArray(object,target){
+        for (key in squareXY){
+            if (object[key][0]===target[0] && object[key][1]===target[1]) {
+                return key
+             }
+        }
+    }
+    const isEmpty = (squareX,squareY) => { return gameBoard.array[squareX][squareY] === 0}; 
+    const randomize = (max) => { return Math.floor(Math.random()*max) }
+    const random = () => {
+        let squareX=randomize(3); 
+        let squareY=randomize(3);
+        isEmpty(squareX,squareY) ? squareId=getKeyByArray(squareXY,[squareX,squareY]) : random();
+        return squareId; 
+    }
+    const algoTable = { "random" : random , "minimax" : "N/A"}
+    const play = (algo) => { document.getElementById(algoTable[algo]()).click() }
+    return {random,play};
+})()
+
 const gameData = (function() {
-     let p1 = Player("Player1",1);
-     let p2 = Player("Player2",-1); 
+     let p1 = Player("Player1",1,"none");
+     let p2 = Player("Player2",-1,"random"); 
      let round=0;
+     let isCPU = () => ( gameData.round % 2 === 0) ? p1.algo!="none" : p2.algo!="none"; 
      let playerTurn = () => ( gameData.round % 2 === 0) ? p1.play : p2.play; 
      let playerName = () => ( (gameData.round + 1) % 2 === 0) ? p1.getName() : p2.getName(); 
      const playerPawn = {"1" : "X","-1" : "O"};
      let pawn = () => playerPawn[playerTurn()];
      let result = {winner : "" , winningDir : ""}; 
-   return {p1,p2,playerName,playerTurn,pawn,result,round}
+   return {p1,p2,playerName,isCPU,playerTurn,pawn,result,round}
 })()
 
 const display = (function() {
@@ -104,6 +117,8 @@ const initGame = (function() {
         this.removeEventListener("click",triggerGame);
         (!gameStatus) ? stopGame() : "";
         (!gameStatus) ? display.gameOver() : "";
+        //(gameStatus) ? (gameData.isCPU() ? document.getElementById(cpuLogic.random()).click() : "" ) : ""
+        (gameStatus) ? (gameData.isCPU() ? cpuLogic.play(gameData.p2.algo) : "" ) : ""
     }
     const startGame = () => {
         [...squares].forEach(square => { square.addEventListener("click", triggerGame); })    
