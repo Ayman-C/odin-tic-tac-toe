@@ -153,7 +153,7 @@ label::after {
 }
 
 input:checked + label:after{
-    translate: 122%;
+    transform: translateX(2.1em)
 }
 
 input:checked + label{
